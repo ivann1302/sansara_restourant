@@ -1,0 +1,23 @@
+:root {
+  --color-bg: #f9f2e5;
+  --color-text: #47342d;
+  --color-olive: #687059;
+  --color-olive-light: #c4ca9b;
+  --color-lemon: #d3d06f;
+  --color-terracotta: #dc7c28;
+  --color-aqua-light: #d8ece6;
+
+  --font-heading: "FoglihtenNo06", Georgia, serif;
+  --font-body: "Montserrat", Arial, sans-serif;
+
+  --container-width: 1200px;
+  --space-page-x: 24px;
+  --space-section: 96px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --motion-duration-fast: 180ms;
+  --motion-duration-base: 320ms;
+  --motion-duration-slow: 720ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

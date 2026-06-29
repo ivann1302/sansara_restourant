@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+import FloatingContacts from "../components/FloatingContacts.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Сансара",
+  description = "Семейный ресторан европейской кухни.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("motion-ready");
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+    <FloatingContacts />
+    <script>
+      const animatedElements = Array.from(document.querySelectorAll("[data-animate]"));
+      const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      if (animatedElements.length > 0) {
+        const revealElement = (element: Element) => {
+          element.classList.add("is-visible");
+        };
+
+        const revealAllElements = () => {
+          animatedElements.forEach(revealElement);
+        };
+
+        if (reduceMotionQuery.matches || !("IntersectionObserver" in window)) {
+          document.documentElement.classList.remove("motion-ready");
+          revealAllElements();
+        } else {
+          const revealObserver = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  revealElement(entry.target);
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              rootMargin: "0px 0px -8% 0px",
+              threshold: 0.16,
+            },
+          );
+
+          animatedElements.forEach((element) => revealObserver.observe(element));
+
+          reduceMotionQuery.addEventListener("change", () => {
+            if (reduceMotionQuery.matches) {
+              revealObserver.disconnect();
+              document.documentElement.classList.remove("motion-ready");
+              revealAllElements();
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,381 @@
+---
+import { Image } from "astro:assets";
+import lemonBranch from "../../assets/images/about-lemon-branch-trimmed.png";
+import oliveBranch from "../../assets/images/about-olive-branch-trimmed.png";
+---
+
+<section id="about" class="about" aria-labelledby="about-title" data-about-parallax>
+  <div class="about__branches" aria-hidden="true">
+    <Image
+      src={lemonBranch}
+      alt=""
+      class="about__branch about__branch--left"
+      data-about-parallax-branch
+      data-about-parallax-speed="-0.9"
+      loading="lazy"
+      decoding="async"
+      widths={[260, 420, 620]}
+      sizes="(max-width: 760px) 44vw, 28vw"
+    />
+    <Image
+      src={oliveBranch}
+      alt=""
+      class="about__branch about__branch--right"
+      data-about-parallax-branch
+      data-about-parallax-speed="1.15"
+      loading="lazy"
+      decoding="async"
+      widths={[420, 640, 880, 1100]}
+      sizes="(max-width: 760px) 76vw, 42vw"
+    />
+  </div>
+
+  <div class="about__shell container">
+    <div class="about__content">
+      <p class="about__eyebrow" data-animate="rise-sm">
+        Семейный ресторан европейской кухни
+      </p>
+      <h2
+        class="about__title"
+        id="about-title"
+        data-animate="rise-sm"
+        style="--motion-delay: 70ms;"
+      >
+        О нас
+      </h2>
+      <div class="about__copy" data-animate="rise-sm" style="--motion-delay: 130ms;">
+        <p class="about__lead">
+          Сансара — место для неспешных встреч, теплых семейных обедов и
+          вечеров, в которых важны вкус, атмосфера и забота о каждом госте.
+        </p>
+        <p>
+          Мы вдохновляемся европейскими традициями, выбираем сезонные продукты
+          и готовим блюда, к которым хочется возвращаться: понятные, аккуратные,
+          с легким средиземноморским настроением.
+        </p>
+      </div>
+
+      <div
+        class="about__divider"
+        aria-hidden="true"
+        data-animate="fade"
+        style="--motion-delay: 190ms;"
+      >
+        <span></span>
+      </div>
+
+      <p class="about__closing" data-animate="rise-sm" style="--motion-delay: 230ms;">
+        Здесь легко собраться всей семьей, выбрать любимое блюдо и остаться еще
+        на один разговор.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const about = document.querySelector("[data-about-parallax]");
+  const branches = Array.from(document.querySelectorAll("[data-about-parallax-branch]"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (about instanceof HTMLElement && branches.length > 0) {
+    let isTicking = false;
+
+    const updateParallax = () => {
+      const branchElements = branches.filter(
+        (branch) => branch instanceof HTMLElement,
+      );
+
+      if (reduceMotion.matches) {
+        branchElements.forEach((branch) => {
+          branch.style.removeProperty("--about-branch-parallax-y");
+        });
+        isTicking = false;
+        return;
+      }
+
+      const rect = about.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+      if (rect.bottom < 0 || rect.top > viewportHeight) {
+        isTicking = false;
+        return;
+      }
+
+      const travel = viewportHeight + rect.height;
+      const progress = (viewportHeight - rect.top) / travel;
+      const centeredProgress = progress - 0.5;
+
+      branchElements.forEach((branch) => {
+        const speed = Number.parseFloat(branch.dataset.aboutParallaxSpeed || "1");
+        const offset = centeredProgress * 190 * speed;
+
+        branch.style.setProperty("--about-branch-parallax-y", `${offset.toFixed(2)}px`);
+      });
+
+      isTicking = false;
+    };
+
+    const requestParallaxUpdate = () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(updateParallax);
+        isTicking = true;
+      }
+    };
+
+    window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
+    window.addEventListener("resize", requestParallaxUpdate);
+    reduceMotion.addEventListener("change", requestParallaxUpdate);
+
+    updateParallax();
+  }
+</script>
+
+<style>
+  .about {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+    margin-top: 0;
+    padding-block: clamp(112px, 12vw, 152px) clamp(92px, 10vw, 126px);
+    overflow: hidden;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .about::before {
+    content: none;
+  }
+
+  .about__branches {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .about__branch {
+    --about-branch-parallax-y: 0px;
+
+    position: absolute;
+    width: auto;
+    height: auto;
+    user-select: none;
+    will-change: transform;
+  }
+
+  .about__branch--left {
+    --about-branch-rotate: 70deg;
+
+    top: clamp(92px, 10vw, 128px);
+    left: -92px;
+    width: min(20vw, 240px);
+    opacity: 0.12;
+    transform: translate3d(0, var(--about-branch-parallax-y), 0) translateX(-8%) rotate(var(--about-branch-rotate));
+    transform-origin: 22% 96%;
+    filter: saturate(0.86) contrast(0.96);
+  }
+
+  .about__branch--right {
+    --about-branch-rotate: -11deg;
+
+    right: clamp(20px, 4vw, 56px);
+    bottom: clamp(52px, 9vw, 92px);
+    width: min(32vw, 450px);
+    opacity: 0.18;
+    transform: translate3d(0, var(--about-branch-parallax-y), 0) rotate(var(--about-branch-rotate));
+    filter: saturate(0.82) contrast(0.95);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about__branch {
+      transform: none;
+      will-change: auto;
+    }
+
+    .about__branch--left {
+      transform: translateX(-8%) rotate(var(--about-branch-rotate));
+    }
+
+    .about__branch--right {
+      transform: rotate(var(--about-branch-rotate));
+    }
+  }
+
+  .about__shell {
+    position: relative;
+    z-index: 1;
+  }
+
+  .about__content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+    margin-left: clamp(0px, 6vw, 88px);
+  }
+
+  .about__eyebrow {
+    margin: 0 0 18px;
+    color: var(--color-olive);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .about__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: clamp(3.9rem, 8vw, 7.2rem);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .about__copy {
+    max-width: 590px;
+    margin-top: clamp(28px, 4vw, 44px);
+    color: rgb(71 52 45 / 0.78);
+    font-size: clamp(1rem, 1.55vw, 1.13rem);
+    line-height: 1.72;
+  }
+
+  .about__copy p {
+    margin: 0;
+  }
+
+  .about__copy p + p {
+    margin-top: 20px;
+  }
+
+  .about__lead {
+    color: rgb(71 52 45 / 0.92);
+    font-weight: 600;
+  }
+
+  .about__divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: min(100%, 520px);
+    margin-top: clamp(34px, 5vw, 52px);
+  }
+
+  .about__divider::before,
+  .about__divider::after {
+    flex: 1 1 0;
+    max-width: 220px;
+    height: 1px;
+    background: linear-gradient(90deg, rgb(104 112 89 / 0.04), rgb(104 112 89 / 0.42));
+    content: "";
+  }
+
+  .about__divider::after {
+    background: linear-gradient(90deg, rgb(104 112 89 / 0.42), rgb(104 112 89 / 0.04));
+  }
+
+  .about__divider span {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-olive);
+    opacity: 0.76;
+  }
+
+  .about__closing {
+    max-width: 520px;
+    margin: clamp(26px, 4vw, 36px) 0 0;
+    color: rgb(104 112 89 / 0.96);
+    font-family: var(--font-heading);
+    font-size: clamp(1.42rem, 2.3vw, 2rem);
+    letter-spacing: 0;
+    line-height: 1.42;
+  }
+
+  @media (max-width: 900px) {
+    .about {
+      margin-top: 0;
+      padding-block: 108px 84px;
+    }
+
+    .about__shell {
+      min-height: auto;
+    }
+
+    .about__content {
+      max-width: 680px;
+      margin-left: 0;
+    }
+
+    .about__branch--left {
+      --about-branch-rotate: 68deg;
+
+      top: 64px;
+      left: -68px;
+      width: min(34vw, 176px);
+      opacity: 0.065;
+    }
+
+    .about__branch--right {
+      right: 12px;
+      bottom: 36px;
+      width: min(54vw, 320px);
+      opacity: 0.12;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about {
+      margin-top: 0;
+      padding-block: 94px 72px;
+    }
+
+    .about__eyebrow {
+      max-width: 260px;
+      margin-bottom: 14px;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+    }
+
+    .about__title {
+      font-size: clamp(3.35rem, 18vw, 4.9rem);
+    }
+
+    .about__copy {
+      margin-top: 26px;
+      font-size: 0.96rem;
+      line-height: 1.68;
+    }
+
+    .about__divider {
+      width: min(100%, 320px);
+    }
+
+    .about__closing {
+      max-width: 320px;
+      font-size: 1.36rem;
+    }
+
+    .about__branch--left {
+      --about-branch-rotate: 66deg;
+
+      top: 48px;
+      left: -66px;
+      width: 132px;
+      opacity: 0.05;
+    }
+
+    .about__branch--right {
+      right: 4px;
+      bottom: 30px;
+      width: 230px;
+      opacity: 0.11;
+    }
+
+    .about__branch {
+      pointer-events: none;
+    }
+  }
+</style>

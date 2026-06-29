@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+*.log
+tmp/
+
+# Large local design source files. Keep optimized site assets in src/ and public/.
+docs/brand-assets/

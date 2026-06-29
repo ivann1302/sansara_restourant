@@ -1,0 +1,75 @@
+---
+import { getImage } from "astro:assets";
+import GalleryReact, { type GalleryItem } from "../react/Gallery";
+import dishImage from "../../assets/images/gallery-dish.png";
+import drinksImage from "../../assets/images/gallery-drinks.png";
+import interiorImage from "../../assets/images/gallery-interior.png";
+import tableImage from "../../assets/images/gallery-table.png";
+import dessertImage from "../../assets/images/gallery-dessert.png";
+import lemonadeImage from "../../assets/images/gallery-lemonade.png";
+
+const gallerySizes =
+  "(max-width: 700px) calc(100vw - 48px), (max-width: 980px) 62vw, (max-width: 1248px) calc((100vw - 96px) / 3), 384px";
+
+const sourceItems = [
+  {
+    src: dishImage,
+    title: "Лосось",
+    alt: "Запеченный лосось с лимоном, оливками и зеленью на керамической тарелке.",
+    className: "gallery__photo--dish",
+  },
+  {
+    src: drinksImage,
+    title: "Вино",
+    alt: "Бокал белого вина, вода, оливки и лимоны в теплой сервировке.",
+    className: "gallery__photo--drinks",
+  },
+  {
+    src: interiorImage,
+    title: "Интерьер",
+    alt: "Светлый зал ресторана Сансара с арками, растениями и накрытыми столами.",
+    className: "gallery__photo--interior",
+  },
+  {
+    src: tableImage,
+    title: "Сервировка",
+    alt: "Стол с сыром, хлебом, оливками, вином и средиземноморскими закусками.",
+    className: "gallery__photo--table",
+  },
+  {
+    src: dessertImage,
+    title: "Десерт",
+    alt: "Лимонный тарт с ягодами на светлой тарелке.",
+    className: "gallery__photo--dessert",
+  },
+  {
+    src: lemonadeImage,
+    title: "Лимонад",
+    alt: "Лимонный напиток со льдом среди оливковых ветвей.",
+    className: "gallery__photo--lemonade",
+  },
+];
+
+const galleryItems: GalleryItem[] = await Promise.all(
+  sourceItems.map(async (item) => {
+    const optimizedImage = await getImage({
+      src: item.src,
+      widths: [320, 520, 720, 920, 1200],
+      format: "webp",
+    });
+
+    return {
+      src: optimizedImage.src,
+      srcSet: optimizedImage.srcSet.attribute,
+      sizes: gallerySizes,
+      width: optimizedImage.attributes.width,
+      height: optimizedImage.attributes.height,
+      title: item.title,
+      alt: item.alt,
+      className: item.className,
+    };
+  }),
+);
+---
+
+<GalleryReact client:visible items={galleryItems} />

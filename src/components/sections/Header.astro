@@ -1,0 +1,115 @@
+<header class="site-header" aria-label="Шапка сайта">
+  <div class="container">
+    <nav
+      class="site-header__nav"
+      aria-label="Основная навигация"
+      data-animate="fade-down"
+      style="--motion-delay: 80ms;"
+    >
+      <a class="site-header__link" href="#about">О нас</a>
+      <a class="site-header__link" href="#gallery">Галерея</a>
+      <a class="site-header__link" href="#contacts">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 20;
+    padding-block: 22px;
+    color: #fffaf0;
+    background: transparent;
+  }
+
+  .site-header .container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 34px;
+  }
+
+  .site-header__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 4px;
+    color: currentcolor;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.64;
+    text-decoration: none;
+    text-shadow:
+      0 2px 12px rgb(0 0 0 / 0.58),
+      0 1px 2px rgb(0 0 0 / 0.46);
+    white-space: nowrap;
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .site-header__link::after {
+    position: absolute;
+    right: 4px;
+    bottom: 5px;
+    left: 4px;
+    height: 2px;
+    border-radius: 999px;
+    background: rgb(104 112 89 / 0.82);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 180ms ease;
+  }
+
+  .site-header__link:hover {
+    transform: translateY(-1px);
+  }
+
+  .site-header__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .site-header__link:focus-visible {
+    outline: 3px solid var(--color-lemon);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header__link,
+    .site-header__link::after {
+      transition: none;
+    }
+
+    .site-header__link:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .site-header {
+      padding-block: 14px;
+    }
+
+    .site-header__nav {
+      width: 100%;
+      gap: 16px;
+    }
+
+    .site-header__link {
+      min-height: 38px;
+      padding: 9px 2px;
+      font-size: 0.76rem;
+    }
+  }
+</style>

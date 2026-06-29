@@ -1,0 +1,544 @@
+---
+const phone = "+79167801064";
+
+const contactLinks = [
+  {
+    icon: "telegram",
+    label: "Открыть Telegram",
+    href: "https://t.me/+79167801064",
+    external: true,
+  },
+  {
+    icon: "max",
+    label: "Открыть MAX",
+    href: "https://max.ru/",
+    external: true,
+  },
+  {
+    icon: "phone",
+    label: "Позвонить",
+    href: `tel:${phone}`,
+    external: false,
+  },
+  {
+    icon: "booking",
+    label: "Забронировать онлайн",
+    href: "#contacts",
+    external: false,
+  },
+] as const;
+---
+
+<div class="floating-contacts" data-floating-contacts>
+  <button
+    class="floating-contacts__trigger"
+    type="button"
+    aria-label="Открыть быстрые контакты"
+    aria-expanded="false"
+    data-floating-contacts-trigger
+  >
+    <svg
+      class="floating-contacts__trigger-icon floating-contacts__trigger-icon--chat"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M21 12a8.7 8.7 0 0 1-9 8.5 9.8 9.8 0 0 1-4.4-1l-4 1.2 1.2-3.6A8.1 8.1 0 0 1 3 12a8.7 8.7 0 0 1 9-8.5A8.7 8.7 0 0 1 21 12Z"></path>
+      <path d="M8.2 11.9h.1M12 11.9h.1M15.8 11.9h.1"></path>
+    </svg>
+    <svg
+      class="floating-contacts__trigger-icon floating-contacts__trigger-icon--close"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M18 6 6 18M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  <nav class="floating-contacts__list" aria-label="Быстрые контакты" data-floating-contacts-list>
+    {
+      contactLinks.map((item) => (
+        <a
+          class={`floating-contacts__button floating-contacts__button--${item.icon}`}
+          href={item.href}
+          aria-label={item.label}
+          data-label={item.label}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noreferrer" : undefined}
+        >
+          {item.icon === "telegram" && (
+            <svg
+              class="floating-contacts__icon floating-contacts__icon--telegram"
+              viewBox="0 0 128 128"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M28.9700376 63.3244248C47.6273373 55.1957357 60.0684594 49.8368063 66.2934036 47.2476366c17.7734809-7.3926056 21.466658-8.6767803 23.8738191-8.7196366.5294328-.0088742 1.7132047.1223351 2.4800024.7445385.6474689.5253764.8256136 1.2350852.9108614 1.7331996.085248.4981144.191402 1.6328319.1070176 2.5194671-.9631512 10.119913-5.1306908 34.6782731-7.2508984 46.012749-.8971395 4.7960416-2.6636347 6.4041299-4.3738056 6.5615026-3.7165995.3420073-6.5388164-2.4561883-10.1385248-4.8158425-5.6328329-3.6923931-8.8150251-5.9909191-14.2826648-9.5940126-6.3188037-4.1639979-2.2225863-6.4526036 1.3784816-10.1928256.9424165-.978834 17.3178391-15.8735468 17.634786-17.2247307.0396394-.1689881.0764268-.7988958-.2977904-1.1315102-.3742172-.3326144-.9265294-.2188732-1.3250933-.1284137-.5649523.1282234-9.5634758 6.0759138-26.9955703 17.8430719-2.554201 1.7539115-4.8677169 2.608476-6.9405477 2.5636937-2.2851298-.049369-6.6808026-1.2920471-9.9485335-2.3542577-4.008005-1.3028444-7.1934876-1.9916677-6.9161036-4.2043001.1444787-1.1524762 1.7315452-2.3311104 4.7611992-3.5359028z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          )}
+
+          {item.icon === "max" && (
+            <svg
+              class="floating-contacts__icon floating-contacts__icon--max"
+              viewBox="0 0 1000 1000"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="currentColor"
+                fill-rule="evenodd"
+                d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          )}
+
+          {item.icon === "phone" && (
+            <svg
+              class="floating-contacts__icon floating-contacts__icon--phone"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path>
+            </svg>
+          )}
+
+          {item.icon === "booking" && (
+            <svg
+              class="floating-contacts__icon floating-contacts__icon--booking"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M8 2v4M16 2v4M3.5 9.5h17M6 4h12a2.5 2.5 0 0 1 2.5 2.5V19A2.5 2.5 0 0 1 18 21.5H6A2.5 2.5 0 0 1 3.5 19V6.5A2.5 2.5 0 0 1 6 4Z"></path>
+              <path d="m8.5 15 2.1 2.1 4.9-5.1"></path>
+            </svg>
+          )}
+        </a>
+      ))
+    }
+  </nav>
+</div>
+
+<script>
+  const floatingContacts = document.querySelector("[data-floating-contacts]");
+  const floatingTrigger = floatingContacts?.querySelector("[data-floating-contacts-trigger]");
+  const floatingList = floatingContacts?.querySelector("[data-floating-contacts-list]");
+  const floatingHero = document.querySelector("#hero");
+  const floatingMobileQuery = window.matchMedia("(max-width: 560px)");
+
+  if (floatingContacts instanceof HTMLElement) {
+    let revealTicking = false;
+    let scrollHideTimeout = 0;
+
+    const closeFloatingContacts = () => {
+      floatingContacts.classList.remove("floating-contacts--open");
+
+      if (floatingTrigger instanceof HTMLButtonElement) {
+        floatingTrigger.setAttribute("aria-expanded", "false");
+      }
+
+      if (floatingList instanceof HTMLElement && floatingMobileQuery.matches) {
+        floatingList.setAttribute("aria-hidden", "true");
+      }
+    };
+
+    const updateFloatingContactsState = () => {
+      const isMobile = floatingMobileQuery.matches;
+      const isOpen = floatingContacts.classList.contains("floating-contacts--open");
+
+      if (floatingList instanceof HTMLElement) {
+        floatingList.setAttribute("aria-hidden", isMobile && !isOpen ? "true" : "false");
+      }
+
+      if (!isMobile) {
+        closeFloatingContacts();
+      }
+    };
+
+    const updateFloatingContactsReveal = () => {
+      const isMobile = floatingMobileQuery.matches;
+      const isAfterHero =
+        floatingHero instanceof HTMLElement ? floatingHero.getBoundingClientRect().bottom <= 80 : true;
+      const shouldReveal = !isMobile || isAfterHero;
+
+      floatingContacts.classList.toggle("floating-contacts--revealed", shouldReveal);
+
+      if (!shouldReveal) {
+        closeFloatingContacts();
+      }
+
+      revealTicking = false;
+    };
+
+    const requestFloatingContactsReveal = () => {
+      if (!revealTicking) {
+        window.requestAnimationFrame(updateFloatingContactsReveal);
+        revealTicking = true;
+      }
+    };
+
+    const hideFloatingContactsDuringScroll = () => {
+      floatingContacts.classList.add("floating-contacts--scrolling");
+
+      if (floatingMobileQuery.matches) {
+        closeFloatingContacts();
+      }
+
+      if (scrollHideTimeout) {
+        window.clearTimeout(scrollHideTimeout);
+      }
+
+      scrollHideTimeout = window.setTimeout(() => {
+        floatingContacts.classList.remove("floating-contacts--scrolling");
+        requestFloatingContactsReveal();
+      }, 220);
+    };
+
+    if (floatingTrigger instanceof HTMLButtonElement) {
+      floatingTrigger.addEventListener("click", () => {
+        const isOpen = floatingContacts.classList.toggle("floating-contacts--open");
+
+        floatingTrigger.setAttribute("aria-expanded", String(isOpen));
+        updateFloatingContactsState();
+      });
+    }
+
+    floatingContacts.addEventListener("click", (event) => {
+      const target = event.target;
+
+      if (floatingMobileQuery.matches && target instanceof HTMLAnchorElement) {
+        closeFloatingContacts();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (
+        floatingMobileQuery.matches &&
+        floatingContacts.classList.contains("floating-contacts--open") &&
+        event.target instanceof Node &&
+        !floatingContacts.contains(event.target)
+      ) {
+        closeFloatingContacts();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeFloatingContacts();
+      }
+    });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        hideFloatingContactsDuringScroll();
+        requestFloatingContactsReveal();
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", requestFloatingContactsReveal);
+    floatingMobileQuery.addEventListener("change", () => {
+      updateFloatingContactsState();
+      requestFloatingContactsReveal();
+    });
+
+    updateFloatingContactsReveal();
+    updateFloatingContactsState();
+  }
+</script>
+
+<style>
+  .floating-contacts {
+    position: fixed;
+    top: 50%;
+    right: max(28px, env(safe-area-inset-right));
+    z-index: 80;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--color-text);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(calc(-50% + 10px));
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 180ms ease;
+    visibility: hidden;
+  }
+
+  .floating-contacts--revealed {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%);
+    visibility: visible;
+  }
+
+  .floating-contacts--scrolling,
+  .floating-contacts--revealed.floating-contacts--scrolling {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(calc(-50% + 10px));
+    visibility: hidden;
+  }
+
+  .floating-contacts__list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .floating-contacts__trigger {
+    display: none;
+  }
+
+  .floating-contacts__button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgb(71 52 45 / 0.18);
+    border-radius: 999px;
+    background: rgb(249 242 229 / 0.94);
+    box-shadow: 0 10px 24px rgb(71 52 45 / 0.16);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .floating-contacts__button::before {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 10px);
+    max-width: 180px;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--color-text);
+    color: #fffaf0;
+    content: attr(data-label);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.2;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(6px, -50%);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+    white-space: nowrap;
+  }
+
+  .floating-contacts__button:hover {
+    border-color: rgb(71 52 45 / 0.3);
+    background: var(--color-text);
+    box-shadow: 0 14px 28px rgb(71 52 45 / 0.22);
+    color: var(--color-bg);
+    transform: translateX(-2px);
+  }
+
+  .floating-contacts__button:hover::before,
+  .floating-contacts__button:focus-visible::before {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+
+  .floating-contacts__button:focus-visible,
+  .floating-contacts__trigger:focus-visible {
+    outline: 3px solid var(--color-lemon);
+    outline-offset: 4px;
+  }
+
+  .floating-contacts__icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
+  .floating-contacts__icon--telegram {
+    width: 28px;
+    height: 28px;
+  }
+
+  .floating-contacts__icon--max {
+    width: 23px;
+    height: 23px;
+  }
+
+  .floating-contacts__icon--phone {
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.9;
+  }
+
+  .floating-contacts__icon--booking {
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.75;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-contacts,
+    .floating-contacts__button,
+    .floating-contacts__list,
+    .floating-contacts__button::before,
+    .floating-contacts__trigger,
+    .floating-contacts__trigger-icon {
+      transition: none;
+    }
+
+    .floating-contacts__button:hover,
+    .floating-contacts__trigger:hover {
+      transform: none;
+    }
+  }
+
+  @media (hover: none) {
+    .floating-contacts__button::before {
+      display: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .floating-contacts {
+      top: auto;
+      right: max(28px, env(safe-area-inset-right));
+      bottom: max(34px, env(safe-area-inset-bottom));
+      display: grid;
+      justify-items: end;
+      gap: 9px;
+      transform: translateY(10px);
+    }
+
+    .floating-contacts--revealed {
+      transform: none;
+    }
+
+    .floating-contacts--scrolling,
+    .floating-contacts--revealed.floating-contacts--scrolling {
+      transform: translateY(10px);
+    }
+
+    .floating-contacts__trigger {
+      position: relative;
+      z-index: 2;
+      order: 2;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: 1px solid rgb(71 52 45 / 0.2);
+      border-radius: 999px;
+      background: var(--color-text);
+      box-shadow: 0 14px 30px rgb(71 52 45 / 0.24);
+      color: var(--color-bg);
+      cursor: pointer;
+      transition:
+        background-color 180ms ease,
+        box-shadow 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+    }
+
+    .floating-contacts__trigger:hover {
+      background: var(--color-olive);
+      transform: translateY(-1px);
+    }
+
+    .floating-contacts--open .floating-contacts__trigger {
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    .floating-contacts__trigger-icon {
+      grid-area: 1 / 1;
+      width: 23px;
+      height: 23px;
+      fill: none;
+      stroke: currentcolor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.9;
+      transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+    }
+
+    .floating-contacts__trigger-icon--close,
+    .floating-contacts--open .floating-contacts__trigger-icon--chat {
+      opacity: 0;
+      transform: scale(0.72) rotate(-18deg);
+    }
+
+    .floating-contacts--open .floating-contacts__trigger-icon--close {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    .floating-contacts__list {
+      order: 1;
+      display: grid;
+      gap: 8px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px) scale(0.94);
+      transform-origin: bottom right;
+      transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        visibility 180ms ease;
+      visibility: hidden;
+    }
+
+    .floating-contacts--open .floating-contacts__list {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      visibility: visible;
+    }
+
+    .floating-contacts__button {
+      width: 38px;
+      height: 38px;
+      box-shadow: 0 8px 18px rgb(71 52 45 / 0.14);
+    }
+
+    .floating-contacts__icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .floating-contacts__icon--telegram {
+      width: 26px;
+      height: 26px;
+    }
+
+    .floating-contacts__icon--max {
+      width: 21px;
+      height: 21px;
+    }
+  }
+</style>
