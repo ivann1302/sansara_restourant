@@ -172,10 +172,9 @@ import footerBranch from "../../assets/images/footer-branch.webp";
   .site-footer__bottom {
     position: relative;
     z-index: 3;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: end;
-    justify-content: space-between;
     gap: 28px;
     padding-top: clamp(24px, 3vw, 36px);
     border-top: 1px solid rgb(104 112 89 / 0.18);
@@ -183,12 +182,16 @@ import footerBranch from "../../assets/images/footer-branch.webp";
 
   .site-footer__info {
     display: grid;
+    grid-column: 2;
     gap: 8px;
+    justify-items: center;
+    justify-self: center;
     margin: 0;
     color: rgb(71 52 45 / 0.74);
     font-style: normal;
     font-size: clamp(0.9rem, 1.15vw, 1rem);
     line-height: 1.52;
+    text-align: center;
   }
 
   .site-footer__info a {
@@ -210,7 +213,9 @@ import footerBranch from "../../assets/images/footer-branch.webp";
 
   .site-footer__button {
     display: inline-flex;
+    grid-column: 3;
     align-items: center;
+    justify-self: end;
     justify-content: center;
     min-height: 50px;
     min-width: 246px;
@@ -265,13 +270,13 @@ import footerBranch from "../../assets/images/footer-branch.webp";
 
     .site-footer__bottom {
       display: grid;
+      grid-template-columns: 1fr;
       gap: 20px;
       align-items: start;
     }
 
     .site-footer__info {
-      justify-items: center;
-      text-align: center;
+      grid-column: auto;
     }
 
     .site-footer .site-footer__button {
