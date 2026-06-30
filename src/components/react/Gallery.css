@@ -103,6 +103,7 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .gallery__track::-webkit-scrollbar {
@@ -302,9 +303,9 @@
   .gallery__track {
     --gallery-slide-size: 100%;
 
-    overflow-x: hidden;
+    overflow-x: auto;
     padding-bottom: 4px;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
   }
 
   .gallery__item {

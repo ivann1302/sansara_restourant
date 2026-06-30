@@ -420,7 +420,7 @@ const contactLinks = [
   @media (max-width: 560px) {
     .floating-contacts {
       top: auto;
-      right: max(28px, env(safe-area-inset-right));
+      right: max(20px, env(safe-area-inset-right));
       bottom: max(34px, env(safe-area-inset-bottom));
       display: grid;
       justify-items: end;
@@ -497,6 +497,8 @@ const contactLinks = [
     .floating-contacts__list {
       order: 1;
       display: grid;
+      justify-items: center;
+      width: 48px;
       gap: 8px;
       padding: 0;
       border: 0;
@@ -505,7 +507,7 @@ const contactLinks = [
       opacity: 0;
       pointer-events: none;
       transform: translateY(10px) scale(0.94);
-      transform-origin: bottom right;
+      transform-origin: bottom center;
       transition:
         opacity 180ms ease,
         transform 180ms ease,
