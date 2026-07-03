@@ -20,14 +20,6 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
   <div class="hero__shade" aria-hidden="true"></div>
 
   <div class="hero__content container">
-    <p
-      class="hero__city"
-      aria-label="Королев"
-      data-animate="fade"
-      style="--motion-delay: 120ms;"
-    >
-      К о р о л е в
-    </p>
     <Image
       src={heroMark}
       alt=""
@@ -123,7 +115,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     z-index: -2;
     width: 100%;
     height: calc(100% + 220px);
-    filter: sepia(0.18) saturate(1.12) brightness(0.96) contrast(1.04);
+    filter: sepia(0.18) saturate(1.12) brightness(0.84) contrast(1.04);
     object-fit: cover;
     object-position: center;
     transform: translate3d(0, var(--hero-parallax-y), 0);
@@ -146,9 +138,9 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     inset: 0;
     z-index: -1;
     background:
-      linear-gradient(0deg, rgb(220 124 40 / 0.14), rgb(249 242 229 / 0.08)),
-      radial-gradient(circle at 50% 42%, rgb(71 52 45 / 0.04), rgb(71 52 45 / 0.34) 72%),
-      linear-gradient(180deg, rgb(20 18 14 / 0.02), rgb(20 18 14 / 0.14) 44%, rgb(20 18 14 / 0.34));
+      linear-gradient(0deg, rgb(220 124 40 / 0.12), rgb(249 242 229 / 0.04)),
+      radial-gradient(circle at 50% 42%, rgb(71 52 45 / 0.08), rgb(71 52 45 / 0.4) 72%),
+      linear-gradient(180deg, rgb(20 18 14 / 0.06), rgb(20 18 14 / 0.2) 44%, rgb(20 18 14 / 0.42));
   }
 
   :global(html.motion-ready) .hero__shade {
@@ -174,15 +166,6 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     text-align: center;
   }
 
-  .hero__city {
-    margin: 0 0 18px;
-    color: rgb(255 250 240 / 0.9);
-    font-family: var(--font-heading);
-    font-size: 0.95rem;
-    line-height: 1.4;
-    text-shadow: 0 10px 32px rgb(0 0 0 / 0.32);
-  }
-
   .hero__mark {
     width: 92px;
     height: auto;
@@ -192,7 +175,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
   }
 
   .hero__wordmark {
-    width: min(100%, 560px);
+    width: min(100%, 753px);
     height: auto;
     filter: drop-shadow(0 18px 48px rgb(0 0 0 / 0.3));
   }
@@ -213,7 +196,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     min-height: 46px;
     padding: 11px 28px;
     border-radius: var(--radius-md);
-    border: 1px solid rgb(255 250 240 / 0.5);
+    border: 0;
     background: rgb(104 112 89 / 0.82);
     box-shadow: 0 18px 44px rgb(0 0 0 / 0.24);
     color: #fffaf0;
@@ -225,7 +208,6 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     white-space: nowrap;
     transition:
       transform 180ms ease,
-      border-color 180ms ease,
       background-color 180ms ease,
       color 180ms ease;
   }
@@ -237,7 +219,6 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
 
   .hero__button:hover {
     transform: translateY(-2px);
-    border-color: rgb(255 250 240 / 0.72);
     background: rgb(71 52 45 / 0.82);
   }
 
@@ -273,11 +254,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     }
 
     .hero__wordmark {
-      width: min(100%, 270px);
-    }
-
-    .hero__city {
-      font-size: 0.9rem;
+      width: min(100%, 363px);
     }
 
     .hero__actions {
@@ -291,13 +268,13 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
 
   @media (min-width: 721px) and (max-width: 1080px) {
     .hero__wordmark {
-      width: min(100%, 480px);
+      width: min(100%, 646px);
     }
   }
 
   @media (max-width: 380px) {
     .hero__wordmark {
-      width: min(100%, 248px);
+      width: min(100%, 334px);
     }
   }
 </style>
