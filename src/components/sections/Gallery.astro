@@ -1,6 +1,6 @@
 ---
 import { getImage } from "astro:assets";
-import GalleryReact, { type GalleryItem } from "../react/Gallery";
+import "./Gallery.css";
 import dishImage from "../../assets/images/gallery-dish.webp";
 import drinksImage from "../../assets/images/gallery-drinks.webp";
 import interiorImage from "../../assets/images/gallery-interior.webp";
@@ -8,8 +8,19 @@ import tableImage from "../../assets/images/gallery-table.webp";
 import dessertImage from "../../assets/images/gallery-dessert.webp";
 import lemonadeImage from "../../assets/images/gallery-lemonade.webp";
 
+type GalleryItem = {
+  src: string;
+  srcSet: string;
+  sizes: string;
+  width: number;
+  height: number;
+  title: string;
+  alt: string;
+  className: string;
+};
+
 const gallerySizes =
-  "(max-width: 700px) calc(100vw - 48px), (max-width: 980px) 62vw, (max-width: 1248px) calc((100vw - 96px) / 3), 384px";
+  "(max-width: 480px) calc((100vw - 48px) * 0.75), (max-width: 700px) calc(100vw - 48px), (max-width: 900px) calc((100vw - 62px) / 2), (max-width: 1248px) calc((100vw - 96px) / 3), 384px";
 
 const sourceItems = [
   {
@@ -54,7 +65,7 @@ const galleryItems: GalleryItem[] = await Promise.all(
   sourceItems.map(async (item) => {
     const optimizedImage = await getImage({
       src: item.src,
-      widths: [320, 520, 720, 920, 1200],
+      widths: [320, 420, 480, 520, 640, 760, 920, 1200],
       format: "webp",
     });
 
@@ -70,6 +81,444 @@ const galleryItems: GalleryItem[] = await Promise.all(
     };
   }),
 );
+
+const hasCarousel = galleryItems.length > 1;
+const renderedItems = hasCarousel
+  ? [0, 1, 2].flatMap((blockIndex) =>
+      galleryItems.map((item, itemIndex) => ({
+        item,
+        realIndex: itemIndex,
+        isClone: blockIndex !== 1,
+        key: `${blockIndex}-${item.title}`,
+      })),
+    )
+  : galleryItems.map((item, itemIndex) => ({
+      item,
+      realIndex: itemIndex,
+      isClone: false,
+      key: item.title,
+    }));
 ---
 
-<GalleryReact client:visible items={galleryItems} />
+{
+  galleryItems.length > 0 && (
+    <section
+      id="gallery"
+      class="gallery"
+      aria-labelledby="gallery-title"
+      aria-roledescription={hasCarousel ? "carousel" : undefined}
+      data-animate="rise-sm"
+      data-gallery
+      data-gallery-count={galleryItems.length}
+    >
+      <div class="gallery__shell container">
+        <div class="gallery__header">
+          <h2 class="gallery__title" id="gallery-title">
+            Галерея
+          </h2>
+
+          {hasCarousel && (
+            <div
+              class="gallery__controls gallery__controls--header"
+              aria-label="Управление галереей"
+            >
+              <button
+                class="gallery__arrow gallery__arrow--prev"
+                type="button"
+                aria-controls="gallery-track"
+                aria-label="Предыдущее фото"
+                title="Предыдущее фото"
+                data-gallery-step="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="gallery__arrow gallery__arrow--next"
+                type="button"
+                aria-controls="gallery-track"
+                aria-label="Следующее фото"
+                title="Следующее фото"
+                data-gallery-step="1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div class="gallery__stage">
+          {hasCarousel && (
+            <div
+              class="gallery__controls gallery__controls--stage"
+              aria-label="Управление галереей"
+            >
+              <button
+                class="gallery__arrow gallery__arrow--prev"
+                type="button"
+                aria-controls="gallery-track"
+                aria-label="Предыдущее фото"
+                title="Предыдущее фото"
+                data-gallery-step="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="gallery__arrow gallery__arrow--next"
+                type="button"
+                aria-controls="gallery-track"
+                aria-label="Следующее фото"
+                title="Следующее фото"
+                data-gallery-step="1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          )}
+
+          <div
+            class="gallery__track"
+            id="gallery-track"
+            aria-label="Фотографии ресторана Сансара"
+            tabindex="0"
+            data-gallery-track
+          >
+            {renderedItems.map(({ item, realIndex, isClone, key }, renderedIndex) => (
+              <figure
+                class="gallery__item"
+                data-active={realIndex === 0 ? "true" : undefined}
+                data-gallery-slide
+                data-gallery-rendered-index={renderedIndex}
+                data-gallery-real-index={realIndex}
+                aria-hidden={isClone ? "true" : undefined}
+                data-gallery-key={key}
+              >
+                <img
+                  src={item.src}
+                  srcset={item.srcSet}
+                  sizes={item.sizes}
+                  width={item.width}
+                  height={item.height}
+                  alt={isClone ? "" : item.alt}
+                  class={`gallery__photo ${item.className}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        {hasCarousel && (
+          <div class="gallery__dots" aria-label="Выбор фотографии">
+            {galleryItems.map((item, index) => (
+              <button
+                class="gallery__dot"
+                type="button"
+                aria-label={`Показать фото: ${item.title}`}
+                aria-pressed={index === 0 ? "true" : "false"}
+                data-gallery-dot={index}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  document.querySelectorAll("[data-gallery]").forEach((gallery) => {
+    const track = gallery.querySelector<HTMLElement>("[data-gallery-track]");
+    const slides = Array.from(gallery.querySelectorAll<HTMLElement>("[data-gallery-slide]"));
+    const dots = Array.from(gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-dot]"));
+    const arrows = Array.from(
+      gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-step]"),
+    );
+    const itemsCount = Number(gallery.getAttribute("data-gallery-count") || "0");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!(track instanceof HTMLElement) || itemsCount < 1 || slides.length < 1) {
+      return;
+    }
+
+    const hasCarousel = itemsCount > 1;
+    let activeIndex = 0;
+    let currentRenderedIndex = hasCarousel ? itemsCount : 0;
+    let isProgrammaticScroll = false;
+    let scrollFrame = 0;
+    let scrollSyncTimeout = 0;
+    let scrollIdleTimeout = 0;
+
+    const getCircularIndex = (index: number) => ((index % itemsCount) + itemsCount) % itemsCount;
+    const getRenderedIndexForRealIndex = (index: number) =>
+      hasCarousel ? itemsCount + getCircularIndex(index) : getCircularIndex(index);
+    const getRealIndex = (slide: HTMLElement) =>
+      Number(slide.getAttribute("data-gallery-real-index") || "0");
+
+    const getResetRenderedIndex = (renderedIndex: number, realIndex: number) => {
+      if (!hasCarousel) {
+        return null;
+      }
+
+      const originalStart = itemsCount;
+      const originalEnd = itemsCount * 2;
+
+      return renderedIndex >= originalStart && renderedIndex < originalEnd
+        ? null
+        : getRenderedIndexForRealIndex(realIndex);
+    };
+
+    const setActiveIndex = (nextIndex: number) => {
+      activeIndex = getCircularIndex(nextIndex);
+
+      slides.forEach((slide) => {
+        if (getRealIndex(slide) === activeIndex) {
+          slide.setAttribute("data-active", "true");
+        } else {
+          slide.removeAttribute("data-active");
+        }
+      });
+
+      dots.forEach((dot) => {
+        dot.setAttribute(
+          "aria-pressed",
+          dot.getAttribute("data-gallery-dot") === String(activeIndex) ? "true" : "false",
+        );
+      });
+    };
+
+    const getNearestRenderedSlide = () => {
+      const trackRect = track.getBoundingClientRect();
+      const trackCenter = trackRect.left + trackRect.width / 2;
+      let nearestRenderedIndex = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      slides.forEach((slide, renderedIndex) => {
+        const slideRect = slide.getBoundingClientRect();
+        const slideCenter = slideRect.left + slideRect.width / 2;
+        const distance = Math.abs(slideCenter - trackCenter);
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestRenderedIndex = renderedIndex;
+        }
+      });
+
+      const nearestSlide = slides[nearestRenderedIndex];
+
+      return nearestSlide
+        ? {
+            realIndex: getRealIndex(nearestSlide),
+            renderedIndex: nearestRenderedIndex,
+          }
+        : null;
+    };
+
+    const syncActiveIndexFromScroll = () => {
+      const nearestSlide = getNearestRenderedSlide();
+
+      if (!nearestSlide) {
+        return;
+      }
+
+      currentRenderedIndex = nearestSlide.renderedIndex;
+      setActiveIndex(nearestSlide.realIndex);
+    };
+
+    const centerRenderedIndex = (renderedIndex: number, behavior: ScrollBehavior) => {
+      const nextSlide = slides[renderedIndex];
+
+      if (!(nextSlide instanceof HTMLElement)) {
+        return false;
+      }
+
+      const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth, 0);
+      const targetScrollLeft = Math.min(
+        Math.max(nextSlide.offsetLeft - (track.clientWidth - nextSlide.offsetWidth) / 2, 0),
+        maxScrollLeft,
+      );
+
+      track.scrollTo({
+        left: targetScrollLeft,
+        behavior,
+      });
+
+      return true;
+    };
+
+    const scrollToRenderedIndex = (
+      renderedIndex: number,
+      realIndex: number,
+      resetRenderedIndex: number | null = null,
+    ) => {
+      const behavior = reduceMotion.matches ? "auto" : "smooth";
+
+      setActiveIndex(realIndex);
+
+      if (!centerRenderedIndex(renderedIndex, behavior)) {
+        return;
+      }
+
+      currentRenderedIndex = renderedIndex;
+      isProgrammaticScroll = true;
+
+      if (scrollSyncTimeout) {
+        window.clearTimeout(scrollSyncTimeout);
+      }
+
+      scrollSyncTimeout = window.setTimeout(
+        () => {
+          if (resetRenderedIndex !== null) {
+            centerRenderedIndex(resetRenderedIndex, "auto");
+            currentRenderedIndex = resetRenderedIndex;
+          }
+
+          isProgrammaticScroll = false;
+          syncActiveIndexFromScroll();
+        },
+        reduceMotion.matches ? 0 : 520,
+      );
+    };
+
+    const scrollToIndex = (index: number) => {
+      const nextIndex = getCircularIndex(index);
+      scrollToRenderedIndex(getRenderedIndexForRealIndex(nextIndex), nextIndex);
+    };
+
+    const scrollByStep = (step: number) => {
+      const nextRenderedIndex = currentRenderedIndex + step;
+      const nextSlide = slides[nextRenderedIndex];
+      const nextIndex = nextSlide ? getRealIndex(nextSlide) : getCircularIndex(activeIndex + step);
+      const targetRenderedIndex = nextSlide
+        ? nextRenderedIndex
+        : getRenderedIndexForRealIndex(nextIndex);
+
+      scrollToRenderedIndex(
+        targetRenderedIndex,
+        nextIndex,
+        getResetRenderedIndex(targetRenderedIndex, nextIndex),
+      );
+    };
+
+    const handleScroll = () => {
+      if (isProgrammaticScroll) {
+        return;
+      }
+
+      if (scrollFrame) {
+        window.cancelAnimationFrame(scrollFrame);
+      }
+
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        syncActiveIndexFromScroll();
+      });
+
+      if (scrollIdleTimeout) {
+        window.clearTimeout(scrollIdleTimeout);
+      }
+
+      scrollIdleTimeout = window.setTimeout(() => {
+        const nearestSlide = getNearestRenderedSlide();
+
+        if (!nearestSlide) {
+          return;
+        }
+
+        const resetRenderedIndex = getResetRenderedIndex(
+          nearestSlide.renderedIndex,
+          nearestSlide.realIndex,
+        );
+
+        if (resetRenderedIndex !== null) {
+          centerRenderedIndex(resetRenderedIndex, "auto");
+          currentRenderedIndex = resetRenderedIndex;
+        }
+      }, 160);
+    };
+
+    arrows.forEach((arrow) => {
+      arrow.addEventListener("click", () => {
+        scrollByStep(Number(arrow.getAttribute("data-gallery-step") || "0"));
+      });
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        scrollToIndex(Number(dot.getAttribute("data-gallery-dot") || "0"));
+      });
+    });
+
+    track.addEventListener("keydown", (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        scrollByStep(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        scrollByStep(1);
+      }
+    });
+
+    track.addEventListener("scroll", handleScroll, { passive: true });
+
+    window.requestAnimationFrame(() => {
+      centerRenderedIndex(currentRenderedIndex, "auto");
+      setActiveIndex(activeIndex);
+      syncActiveIndexFromScroll();
+    });
+  });
+</script>

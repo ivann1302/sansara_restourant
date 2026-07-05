@@ -32,7 +32,7 @@ import footerBranch from "../../assets/images/footer-branch.webp";
 
     <div class="site-footer__bottom" data-animate="rise-sm">
       <address class="site-footer__info" aria-label="Реквизиты ресторана">
-        <a href="mailto:info@pinskiy-concept.ru">info@pinskiy-concept.ru</a>
+        <a href="mailto:yksvr@yandex.ru">yksvr@yandex.ru</a>
         <span>ИНН 5018182953</span>
         <span>ООО «ЭДЕЛЬВЕЙС»</span>
       </address>
@@ -60,17 +60,16 @@ import footerBranch from "../../assets/images/footer-branch.webp";
 
   if (footer instanceof HTMLElement) {
     const root = document.documentElement;
-    const body = document.body;
 
     const updateFooterLayer = () => {
-      if (reduceMotion.matches || !body) {
+      if (reduceMotion.matches) {
         root.style.removeProperty("--footer-parallax-height");
-        body?.classList.remove("footer-parallax-enabled");
+        root.classList.remove("footer-parallax-enabled");
         return;
       }
 
       root.style.setProperty("--footer-parallax-height", `${footer.offsetHeight}px`);
-      body.classList.add("footer-parallax-enabled");
+      root.classList.add("footer-parallax-enabled");
     };
 
     const footerObserver = "ResizeObserver" in window
@@ -94,11 +93,11 @@ import footerBranch from "../../assets/images/footer-branch.webp";
     color: var(--color-text);
   }
 
-  :global(body.footer-parallax-enabled) {
+  :global(html.footer-parallax-enabled body) {
     background: #f3ebd5;
   }
 
-  :global(body.footer-parallax-enabled main) {
+  :global(html.footer-parallax-enabled body main) {
     position: relative;
     z-index: 2;
     margin-bottom: var(--footer-parallax-height, 360px);
@@ -106,7 +105,7 @@ import footerBranch from "../../assets/images/footer-branch.webp";
     box-shadow: 0 24px 60px rgb(71 52 45 / 0.12);
   }
 
-  :global(body.footer-parallax-enabled) .site-footer {
+  :global(html.footer-parallax-enabled body) .site-footer {
     position: fixed;
     inset: auto 0 0;
     z-index: 1;

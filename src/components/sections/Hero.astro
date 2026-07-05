@@ -26,6 +26,8 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
       class="hero__mark"
       loading="eager"
       decoding="async"
+      widths={[76, 92, 152, 184]}
+      sizes="(max-width: 720px) 76px, 92px"
     />
     <h1 class="sr-only" id="hero-title">Сансара</h1>
     <Image
@@ -33,7 +35,10 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
       alt=""
       class="hero__wordmark"
       loading="eager"
-      decoding="async"
+      decoding="sync"
+      fetchpriority="high"
+      widths={[337, 646, 753, 985]}
+      sizes="(max-width: 380px) 85vw, (max-width: 720px) 337px, (max-width: 1080px) 646px, 753px"
     />
     <div
       class="hero__actions"
@@ -41,8 +46,8 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
       data-animate="rise-sm"
       style="--motion-delay: 220ms;"
     >
-      <a class="hero__button" href="#about" aria-label="Меню">
-        <span class="hero__button-text">М е н ю</span>
+      <a class="hero__button" href="#about">
+        <span class="hero__button-text">Меню</span>
       </a>
     </div>
   </div>
@@ -214,6 +219,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
 
   .hero__button-text {
     display: block;
+    letter-spacing: 0.26em;
     transform: translateY(3px);
   }
 
@@ -254,7 +260,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
     }
 
     .hero__wordmark {
-      width: min(100%, 363px);
+      width: min(85.47vw, 337px);
     }
 
     .hero__actions {
@@ -274,7 +280,7 @@ import heroBackground from "../../assets/images/sansara-hero-background.webp";
 
   @media (max-width: 380px) {
     .hero__wordmark {
-      width: min(100%, 334px);
+      width: min(85.47vw, 323px);
     }
   }
 </style>

@@ -13,6 +13,7 @@ dist/
 # Logs and temporary files
 *.log
 tmp/
+LIGHTHOUSE_FIX_PLAN.md
 
 # Large local design source files. Keep optimized site assets in src/ and public/.
 docs/brand-assets/

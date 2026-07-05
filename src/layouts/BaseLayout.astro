@@ -11,6 +11,11 @@ const {
   title = "Сансара",
   description = "Семейный ресторан европейской кухни.",
 } = Astro.props;
+
+const publicBase = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const publicPath = (path: string) => `${publicBase}${path.replace(/^\//, "")}`;
 ---
 
 <!doctype html>
@@ -19,14 +24,14 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" href={publicPath("favicon.ico")} sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href={publicPath("favicon-32x32.png")} />
+    <link rel="icon" type="image/png" sizes="16x16" href={publicPath("favicon-16x16.png")} />
+    <link rel="apple-touch-icon" sizes="180x180" href={publicPath("apple-touch-icon.png")} />
     <title>{title}</title>
     <script is:inline>
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.documentElement.classList.add("motion-ready");
+        document.documentElement.classList.add("motion-ready", "footer-parallax-enabled");
       }
     </script>
   </head>
@@ -38,17 +43,31 @@ const {
       const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
       if (animatedElements.length > 0) {
+        const observedElements = new WeakSet<Element>();
+        const hydratedIslands = new WeakSet<Element>();
+        const islands = Array.from(document.querySelectorAll("astro-island"));
+
         const revealElement = (element: Element) => {
           element.classList.add("is-visible");
         };
 
-        const revealAllElements = () => {
-          animatedElements.forEach(revealElement);
+        const getHydrationReadyElements = (root: ParentNode = document) => {
+          return Array.from(root.querySelectorAll("[data-animate]")).filter(
+            (element) => {
+              const island = element.closest("astro-island");
+
+              return !(island instanceof Element) || hydratedIslands.has(island);
+            },
+          );
+        };
+
+        const revealHydrationReadyElements = () => {
+          getHydrationReadyElements().forEach(revealElement);
         };
 
         if (reduceMotionQuery.matches || !("IntersectionObserver" in window)) {
           document.documentElement.classList.remove("motion-ready");
-          revealAllElements();
+          revealHydrationReadyElements();
         } else {
           const revealObserver = new IntersectionObserver(
             (entries, observer) => {
@@ -65,13 +84,39 @@ const {
             },
           );
 
-          animatedElements.forEach((element) => revealObserver.observe(element));
+          const observeHydrationReadyElements = (root: ParentNode = document) => {
+            getHydrationReadyElements(root).forEach((element) => {
+              if (observedElements.has(element)) {
+                return;
+              }
+
+              observedElements.add(element);
+              revealObserver.observe(element);
+            });
+          };
+
+          islands.forEach((island) => {
+            if (island.hasAttribute("client-render-time")) {
+              hydratedIslands.add(island);
+            }
+
+            island.addEventListener(
+              "astro:hydrate",
+              () => {
+                hydratedIslands.add(island);
+                observeHydrationReadyElements(island);
+              },
+              { once: true },
+            );
+          });
+
+          observeHydrationReadyElements();
 
           reduceMotionQuery.addEventListener("change", () => {
             if (reduceMotionQuery.matches) {
               revealObserver.disconnect();
               document.documentElement.classList.remove("motion-ready");
-              revealAllElements();
+              revealHydrationReadyElements();
             }
           });
         }
