@@ -9,6 +9,7 @@ dist/
 .env
 .env.*
 !.env.example
+server/config/admin.local.php
 
 # Logs and temporary files
 *.log
